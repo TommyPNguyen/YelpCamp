@@ -1,8 +1,11 @@
+require("dotenv").config();
+
 var express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
     mongoose = require("mongoose"),
     flash = require("connect-flash"),
+    moment = require('moment'),
     passport = require("passport"),
     LocalStrategy = require("passport-local"),
     methodOverride = require("method-override"),
@@ -11,11 +14,11 @@ var express = require("express"),
     User = require("./models/user"),
     seedDB = require("./seeds");
 
-//requiring routes    
+//requiring routes
 var commentRoutes = require("./routes/comments"),
     campgroundRoutes = require("./routes/campgrounds"),
     authRoutes = require("./routes/auth");
-    
+
 
 var url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp_v9"
 mongoose.connect(url);
@@ -24,6 +27,7 @@ app.set("view engine", 'ejs');
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
+app.locals.moment=require("moment")
 //seed the database
 //seedDB();
 
@@ -52,6 +56,7 @@ app.use("/campgrounds/:id/comments",commentRoutes);
 app.use("/campgrounds",campgroundRoutes);
 
 
-app.listen(process.env.PORT, process.env.IP, function(){
+
+app.listen(5000, function(){
     console.log("The YelpCamp Server Has Started!")
 });
